@@ -346,12 +346,12 @@ WindUI:Popup({
 repeat task.wait() until Confirmed
 
 local Window = WindUI:CreateWindow({
-    Folder = "CherryWare",
+    Folder = "Cherry Hub",
     Author = "Cherry",
     Title = "99 Night in the Forest (Beta)",
     IconThemed = true,
     Icon = "cherry",
-    Author = "CherryWare",
+    Author = "Cherry Hub",
     Size = UDim2.fromOffset(580, 460),
     Transparent = true,
     Theme = "Purple",
