@@ -4,7 +4,7 @@ local ThemeManager = loadstring(game:HttpGet('https://raw.githubusercontent.com/
 local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
 
 local Window = Library:CreateWindow({
-    Title = 'Cherry Hub - Fisch V1.0.0 (BETA)',
+    Title = 'Fisch V1.1.0 (BETA)',
     Center = true,
     AutoShow = true,
     TabPadding = 8,
@@ -283,6 +283,30 @@ AutoShakeGroup:AddToggle('AutoShake', {
 AutoShakeGroup:AddLabel('Rage Shake')
 
 -- Fish Utilities
+local autosell = false
+
+function AutoSellz()
+    spawn(function()
+        while autosell do
+            SellFishAndReturnAll()
+            task.wait(5)
+        end
+    end)
+end
+
+
+FishUtilitiesGroup:AddToggle('AutoSell', {
+    Text = 'Auto Sell Fish',
+    Default = false,
+    Tooltip = 'Auto selling your fish',
+    Callback = function(Value)
+        autosell = Value
+        while autosell do
+            AutoSellz()
+        end
+    end
+})
+
 local SellButton = FishUtilitiesGroup:AddButton({
     Text = 'Sell a fish',
     Func = function()
@@ -425,6 +449,29 @@ LocalPlayerGroup:AddToggle('AntiDrown', {
     end
 })
 
+local walkOnWaterEnabled = false
+
+local function SetWalkOnWater(Value)
+    walkOnWaterEnabled = Value
+
+    local fishingZone = workspace:WaitForChild("zones"):WaitForChild("fishing")
+    for _, part in ipairs(fishingZone:GetDescendants()) do
+        if part:IsA("BasePart") then
+            part.CanCollide = walkOnWaterEnabled
+        end
+    end
+end
+
+LocalPlayerGroup:AddToggle('walkwater', {
+    Text = 'Walk On Water',
+    Default = false,
+    Tooltip = 'Make You walk on water',
+    Callback = function(Value)
+        SetWalkOnWater(Value)
+    end
+})
+
+
 local FreezeCharacterGroup = Tabs.LocalPlayer:AddLeftGroupbox('Freeze Character')
 
 FreezeCharacterGroup:AddToggle('FreezeCharacter', {
@@ -478,7 +525,7 @@ local WatermarkConnection = game:GetService('RunService').RenderStepped:Connect(
         FrameCounter = 0;
     end;
 
-    Library:SetWatermark(('Cherry Hub V1.0.0 | %s fps | %s ms | Game: Fisch'):format(
+    Library:SetWatermark(('Cherry Hub V1.1.0 | %s fps | %s ms | Game: Fisch'):format(
         math.floor(FPS),
         math.floor(game:GetService('Stats').Network.ServerStatsItem['Data Ping']:GetValue())
     ));
