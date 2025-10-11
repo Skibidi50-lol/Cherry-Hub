@@ -176,19 +176,20 @@ function UILibrary:CreateWindow(config)
         end
     end)
 
-        local toggleButton = Instance.new("TextButton")
+      local toggleButton = Instance.new("TextButton")
     toggleButton.Name = "UIToggleButton"
     toggleButton.AnchorPoint = Vector2.new(1, 1)
-    toggleButton.Position = UDim2.new(1, -10, 1, -10)
-    toggleButton.Size = UDim2.new(0, 100, 0, 35)
+    toggleButton.Position = UDim2.new(1, -15, 1, -15)
+    toggleButton.Size = UDim2.new(0, 110, 0, 40)
     toggleButton.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
     toggleButton.Text = "🧩 Hide UI"
     toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
     toggleButton.TextSize = 14
     toggleButton.Font = Enum.Font.GothamBold
     toggleButton.Parent = screenGui
-    AddCorner(toggleButton, 8)
+    AddCorner(toggleButton, 10)
 
+    -- Hover animation
     toggleButton.MouseEnter:Connect(function()
         Tween(toggleButton, {BackgroundColor3 = Color3.fromRGB(60, 60, 200)}, 0.2)
     end)
@@ -196,16 +197,48 @@ function UILibrary:CreateWindow(config)
         Tween(toggleButton, {BackgroundColor3 = Color3.fromRGB(40, 40, 45)}, 0.2)
     end)
 
+    -- Show/Hide main UI
     local uiVisible = true
     toggleButton.MouseButton1Click:Connect(function()
         uiVisible = not uiVisible
         mainFrame.Visible = uiVisible
-        if uiVisible then
-            toggleButton.Text = "🧩 Hide UI"
-            Tween(toggleButton, {BackgroundColor3 = Color3.fromRGB(60, 60, 200)}, 0.2)
-        else
-            toggleButton.Text = "🧩 Show UI"
-            Tween(toggleButton, {BackgroundColor3 = Color3.fromRGB(40, 40, 45)}, 0.2)
+        toggleButton.Text = uiVisible and "🧩 Hide UI" or "🧩 Show UI"
+        Tween(toggleButton, {BackgroundColor3 = uiVisible and Color3.fromRGB(60, 60, 200) or Color3.fromRGB(40, 40, 45)}, 0.2)
+    end)
+
+    -- Make toggle draggable
+    local draggingToggle = false
+    local dragInputToggle, dragStartToggle, startPosToggle
+
+    toggleButton.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            draggingToggle = true
+            dragStartToggle = input.Position
+            startPosToggle = toggleButton.Position
+
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    draggingToggle = false
+                end
+            end)
+        end
+    end)
+
+    toggleButton.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement then
+            dragInputToggle = input
+        end
+    end)
+
+    UserInputService.InputChanged:Connect(function(input)
+        if input == dragInputToggle and draggingToggle then
+            local delta = input.Position - dragStartToggle
+            toggleButton.Position = UDim2.new(
+                startPosToggle.X.Scale,
+                startPosToggle.X.Offset + delta.X,
+                startPosToggle.Y.Scale,
+                startPosToggle.Y.Offset + delta.Y
+            )
         end
     end)
     
