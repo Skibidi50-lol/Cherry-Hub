@@ -179,7 +179,7 @@ function UILibrary:CreateWindow(config)
       local toggleButton = Instance.new("TextButton")
     toggleButton.Name = "UIToggleButton"
     toggleButton.AnchorPoint = Vector2.new(1, 1)
-    toggleButton.Position = UDim2.new(0, 10, 0, 0)
+    toggleButton.Position = UDim2.new(0.5, -250, 0.5, 0)
     toggleButton.Size = UDim2.new(0, 110, 0, 40)
     toggleButton.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
     toggleButton.Text = "🧩 Hide UI"
