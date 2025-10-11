@@ -96,7 +96,7 @@ function UILibrary:CreateWindow(config)
     closeBtn.AnchorPoint = Vector2.new(1, 0.5)
     closeBtn.Position = UDim2.new(1, -10, 0.5, 0)
     closeBtn.Size = UDim2.new(0, 28, 0, 28)
-    closeBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
+    closeBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
     closeBtn.BorderSizePixel = 0
     closeBtn.Text = "X"
     closeBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
@@ -112,7 +112,7 @@ function UILibrary:CreateWindow(config)
     end)
     
     closeBtn.MouseEnter:Connect(function()
-        Tween(closeBtn, {BackgroundColor3 = Color3.fromRGB(200, 50, 50)})
+        Tween(closeBtn, {BackgroundColor3 = Color3.fromRGB(255, 50, 50)})
     end)
     
     closeBtn.MouseLeave:Connect(function()
